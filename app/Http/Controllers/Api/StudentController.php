@@ -48,7 +48,7 @@ class StudentController extends Controller
 
         $student = Student::create($data);
 
-        return new StudentResource($student);
+        return (new StudentResource($student))->response()->setStatusCode(201);
     }
 
     public function show(Student $student)

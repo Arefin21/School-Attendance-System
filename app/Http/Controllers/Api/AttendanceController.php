@@ -52,7 +52,7 @@ class AttendanceController extends Controller
             $data
         );
 
-        return new AttendanceResource($attendance->load(['student', 'recorder']));
+        return (new AttendanceResource($attendance->load(['student', 'recorder'])))->response()->setStatusCode(201);
     }
 
     public function bulkStore(BulkAttendanceRequest $request)
