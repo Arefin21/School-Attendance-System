@@ -1,19 +1,37 @@
 <?php
 
+use App\Http\Controllers\Api\AttendanceController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+// Authentication routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Public routes (for testing without auth)
+Route::get('/students', [StudentController::class, 'index']);
+Route::get('/students/{student}', [StudentController::class, 'show']);
+Route::get('/attendances', [AttendanceController::class, 'index']);
+
+// Protected routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
+
+    // Student management
+    Route::post('/students', [StudentController::class, 'store']);
+    Route::put('/students/{student}', [StudentController::class, 'update']);
+    Route::delete('/students/{student}', [StudentController::class, 'destroy']);
+
+    // Attendance management
+    Route::post('/attendances', [AttendanceController::class, 'store']);
+    Route::post('/attendances/bulk', [AttendanceController::class, 'bulkStore']);
+    Route::get('/attendances/{attendance}', [AttendanceController::class, 'show']);
+    Route::put('/attendances/{attendance}', [AttendanceController::class, 'update']);
+    Route::delete('/attendances/{attendance}', [AttendanceController::class, 'destroy']);
 });
