@@ -1,0 +1,809 @@
+{
+	"info": {
+		"name": "School Attendance System API",
+		"description": "Complete API collection for School Attendance System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"testuser@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					}
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.token) {",
+									"    pm.environment.set(\"auth_token\", jsonData.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@school.com\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"me"
+							]
+						}
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"logout"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Students",
+			"item": [
+				{
+					"name": "Get All Students",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/students",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"students"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Students with Pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/students?per_page=10&page=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Search Students by Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/students?search=John",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "John"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Filter Students by Class",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/students?class=5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "class",
+									"value": "5"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Filter Students by Class and Section",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/students?class=5&section=A",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "class",
+									"value": "5"
+								},
+								{
+									"key": "section",
+									"value": "A"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Single Student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/students/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"students",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Student (JSON)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"student_id\": \"STU9999\",\n    \"class\": \"5\",\n    \"section\": \"A\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/students",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"students"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Student with Photo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Jane Smith",
+									"type": "text"
+								},
+								{
+									"key": "student_id",
+									"value": "STU8888",
+									"type": "text"
+								},
+								{
+									"key": "class",
+									"value": "6",
+									"type": "text"
+								},
+								{
+									"key": "section",
+									"value": "B",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/students",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"students"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Student",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe Updated\",\n    \"class\": \"6\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/students/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"students",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Student",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/students/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"students",
+								"1"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Attendance",
+			"item": [
+				{
+					"name": "Get All Attendance Records",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/attendances",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances"
+							]
+						}
+					}
+				},
+				{
+					"name": "Filter Attendance by Date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/attendances?date=2025-11-16",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2025-11-16"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Filter Attendance by Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/attendances?status=present",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "present"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Filter Attendance by Student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/attendances?student_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances"
+							],
+							"query": [
+								{
+									"key": "student_id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Single Attendance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/attendances/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Record Single Attendance",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"student_id\": 1,\n    \"date\": \"2025-11-16\",\n    \"status\": \"present\",\n    \"note\": \"On time\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/attendances",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances"
+							]
+						}
+					}
+				},
+				{
+					"name": "Record Attendance - Absent",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"student_id\": 2,\n    \"date\": \"2025-11-16\",\n    \"status\": \"absent\",\n    \"note\": \"Sick leave\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/attendances",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances"
+							]
+						}
+					}
+				},
+				{
+					"name": "Record Attendance - Late",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"student_id\": 3,\n    \"date\": \"2025-11-16\",\n    \"status\": \"late\",\n    \"note\": \"Traffic jam\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/attendances",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances"
+							]
+						}
+					}
+				},
+				{
+					"name": "Bulk Record Attendance",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"2025-11-16\",\n    \"attendances\": [\n        {\n            \"student_id\": 1,\n            \"status\": \"present\",\n            \"note\": \"On time\"\n        },\n        {\n            \"student_id\": 2,\n            \"status\": \"absent\",\n            \"note\": \"Sick leave\"\n        },\n        {\n            \"student_id\": 3,\n            \"status\": \"late\",\n            \"note\": \"Arrived 10 minutes late\"\n        },\n        {\n            \"student_id\": 4,\n            \"status\": \"present\"\n        },\n        {\n            \"student_id\": 5,\n            \"status\": \"present\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/attendances/bulk",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances",
+								"bulk"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Attendance",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"present\",\n    \"note\": \"Updated note\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/attendances/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Attendance",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/attendances/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances",
+								"1"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Reports & Statistics",
+			"item": [
+				{
+					"name": "Get Today's Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/attendances/today-summary",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances",
+								"today-summary"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Stats by Date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/attendances/stats-by-date?date=2025-11-16",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances",
+								"stats-by-date"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2025-11-16"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Monthly Report (All Classes)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/attendances/monthly-report?year=2025&month=11",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances",
+								"monthly-report"
+							],
+							"query": [
+								{
+									"key": "year",
+									"value": "2025"
+								},
+								{
+									"key": "month",
+									"value": "11"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Monthly Report (Specific Class)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/attendances/monthly-report?year=2025&month=11&class=5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"attendances",
+								"monthly-report"
+							],
+							"query": [
+								{
+									"key": "year",
+									"value": "2025"
+								},
+								{
+									"key": "month",
+									"value": "11"
+								},
+								{
+									"key": "class",
+									"value": "5"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+

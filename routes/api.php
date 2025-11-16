@@ -14,6 +14,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/students', [StudentController::class, 'index']);
 Route::get('/students/{student}', [StudentController::class, 'show']);
 Route::get('/attendances', [AttendanceController::class, 'index']);
+Route::get('/attendances/today-summary', [AttendanceController::class, 'todaysSummary']);
+Route::get('/attendances/stats-by-date', [AttendanceController::class, 'statsByDate']);
+Route::get('/attendances/monthly-report', [AttendanceController::class, 'monthlyReport']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
