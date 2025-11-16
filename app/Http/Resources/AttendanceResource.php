@@ -7,13 +7,24 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class AttendanceResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'student' => new StudentResource($this->whenLoaded('student')),
+            'student_id' => $this->student_id,
+            'date' => $this->date->format('Y-m-d'),
+            'status' => $this->status,
+            'note' => $this->note,
+            'recorded_by' => $this->recorded_by,
+            'recorder' => $this->whenLoaded('recorder', function() {
+                return [
+                    'id' => $this->recorder->id,
+                    'name' => $this->recorder->name,
+                ];
+            }),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
 }
