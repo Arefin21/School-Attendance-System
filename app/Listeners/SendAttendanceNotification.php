@@ -3,24 +3,18 @@
 namespace App\Listeners;
 
 use App\Events\AttendanceRecorded;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
 class SendAttendanceNotification
 {
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Handle the event.
-     */
     public function handle(AttendanceRecorded $event): void
     {
-        //
+        $attendance = $event->attendance;
+        
+        Log::info('Attendance recorded', [
+            'student_id' => $attendance->student_id,
+            'date' => $attendance->date,
+            'status' => $attendance->status,
+        ]);
     }
 }
